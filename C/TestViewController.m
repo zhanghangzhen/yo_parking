@@ -16,8 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     
+    NSLog(@"niahiugap");
     
    }
 -(void)niaho{
