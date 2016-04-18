@@ -7,7 +7,7 @@
 //
 
 #import "GCD.h"
-
+#import <UIKit/UIKit.h>
 typedef void (^Backs)(UIImage *);
 
 @interface GCD (img)

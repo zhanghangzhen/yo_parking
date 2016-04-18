@@ -15,8 +15,8 @@
             callBack(nil);
         }else{
         
-            UIImage *img = [UIImage imageWithData:data];
-            callBack(img);
+            UIImage *image = [UIImage imageWithData:data];
+            callBack(image);
         }
     }];
 }

@@ -8,6 +8,8 @@
 
 #import "Keyboard.h"
 #import "MyControl.h"
+#import "Header.h"
+
 #define  iPhone4     ([[UIScreen mainScreen] bounds].size.height==480)
 
 #define  iPhone5     ([[UIScreen mainScreen] bounds].size.height==568)
@@ -93,7 +95,7 @@
 }
 -(void)createKeyboard{
 
-    self.keyBoardView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 35, SCREEN_WIDTH, self.frame.size.height)];
+    self.keyBoardView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 35, [UIScreen mainScreen].bounds.size.width, self.frame.size.height)];
     self.keyBoardView.bounces = NO;
     self.keyBoardView.showsHorizontalScrollIndicator = FALSE;
     self.keyBoardView.delaysContentTouches = NO;

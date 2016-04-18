@@ -12,14 +12,19 @@
 #import "LeftMenuView.h"
 #import "TestViewController.h"
 
-@interface ViewController ()<UIGestureRecognizerDelegate>
+@interface ViewController ()<UIGestureRecognizerDelegate,UITableViewDelegate,UITableViewDataSource>
+
+{
+    UITableView *_tableView;
+}
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightItem;
 @property (nonatomic,strong)LeftMenuView *leftView;
-
 
 @end
 
 @implementation ViewController
+
+
 - (IBAction)showLeftView:(id)sender {
     [self.navigationController.view addSubview:_leftView];
     [UIView animateWithDuration:0.3 animations:^{
@@ -44,7 +49,70 @@
     edgeGesture.edges = UIRectEdgeLeft;
     edgeGesture.delegate = self;
     [self.view addGestureRecognizer:edgeGesture];
- }
+    _tableView = [[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+     [self.view addSubview:_tableView];
+    
+    [_tableView reloadData];
+    
+  }
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    return 100;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.backgroundColor = [UIColor purpleColor];
+    }
+    return  cell;
+}
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 100;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    //转动特效
+    CATransform3D rotation;
+    rotation = CATransform3DMakeTranslation(0 ,100 ,20);
+//    rotation = CATransform3DScale(rotation, 0.7, .9, 2);
+    rotation = CATransform3DScale(rotation, 0.7, .9, 2);
+
+    rotation.m34 = 1.0/ -600;
+    /*
+     CATransform3D rotation;//3D旋转
+     rotation = CATransform3DMakeTranslation(0 ,100 ,20);
+     
+     rotation = CATransform3DScale(rotation, 0.7, .9, 2);
+     rotation.m34 = 5.0/ -600;
+     */
+    cell.layer.shadowColor = [[UIColor blackColor]CGColor];
+    cell.layer.shadowOffset = CGSizeMake(100, 100);
+    cell.alpha = 0;
+    cell.layer.transform = rotation;
+//    cell.layer.anchorPoint = CGPointMake(0, 0.5);
+    
+    
+    [UIView beginAnimations:@"rotation" context:NULL];
+    [UIView setAnimationDuration:0.8];
+    cell.layer.transform = CATransform3DIdentity;
+    cell.alpha = 1;
+    cell.layer.shadowOffset = CGSizeMake(0, 0);
+    [UIView commitAnimations];
+    
+//    [UIView animateWithDuration:0.5 animations:^{
+//        cell.layer.transform = CATransform3DIdentity;
+//        cell.alpha = 1;
+//        cell.layer.shadowOffset = CGSizeMake(0, 0);
+//    }];
+}
 #pragma mark - GestureRecognizer Delegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
